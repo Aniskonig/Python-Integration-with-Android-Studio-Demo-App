@@ -1,35 +1,77 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.chaquo.python'
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
     defaultConfig {
         applicationId "com.medanis.pythonintegrationdemoapp"
-        minSdkVersion 15
+        sourceSets {
+            main {
+                python {
+                    srcDirs = ["src/main/python"]
+//                    srcDir "additional/dir"
+                }
+            }
+        }
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        android.defaultConfig.vectorDrawables.useSupportLibrary = true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        python {
+            buildPython "C:/Users/aniso/AppData/Local/Programs/Python/Python38/python.exe"
+//            buildPython "py -3.7"
+        }
     }
+//    flavorDimensions "abi"
+//    productFlavors {
+//        arm {
+//            dimension "abi"
+//            ndk { abiFilters "armeabi-v7a" }
+//        }
+//        x86 {
+//            dimension "abi"
+//            ndk { abiFilters "x86" }
+//        }
+//    }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileSdkVersion = 29
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //noinspection GradleCompatible
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.android.support:cardview-v7:29.0.0'
+    implementation 'com.android.support:gridlayout-v7:29.0.0'
+    implementation 'com.android.support:recyclerview-v7:29.0.0'
+    implementation 'com.android.support:design:29.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
 }
